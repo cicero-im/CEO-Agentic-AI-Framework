@@ -3,7 +3,6 @@ import hashlib
 import inspect
 import json
 import logging
-import random
 import time
 from typing import Callable
 
@@ -16,6 +15,7 @@ from ceo.prompt import (
     RequestResolverPrompt,
     SelfIntroducePrompt
 )
+import secrets
 
 log = logging.getLogger('ceo')
 SYSTEM_ABILITY_PREFIX = '__SystemAbility__'
@@ -61,9 +61,9 @@ class BaseAgent:
 
     def _generate_name(self) -> str:
         __abilities_ls = [ability.to_dict() for ability in self.abilities]
-        __tmp_bytes = f'{__abilities_ls}{time.time()}{random.uniform(0, 10 ** 3)}'.encode('utf-8')
+        __tmp_bytes = f'{__abilities_ls}{time.time()}{secrets.SystemRandom().uniform(0, 10 ** 3)}'.encode('utf-8')
         __tmp_str = hashlib.md5(__tmp_bytes).hexdigest()
-        __sample_str = ''.join(random.sample(__tmp_str, 6))
+        __sample_str = ''.join(secrets.SystemRandom().sample(__tmp_str, 6))
         return f'智能體{__sample_str}型號'
 
     def to_dict(self) -> dict:
