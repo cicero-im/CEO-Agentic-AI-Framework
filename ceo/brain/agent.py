@@ -1,7 +1,6 @@
 import hashlib
 import json
 import logging
-import random
 import datetime
 import time
 from typing import Callable
@@ -25,6 +24,7 @@ from ceo.prompt import (
     ExecutorPrompt,
     IntrospectionPrompt
 )
+import secrets
 
 PRUDENT_P = 0.25
 PRUDENT_BETA = 1.45
@@ -192,7 +192,7 @@ class Agent(BaseAgent, MemoryAugment):
         log.debug(f'Agent: {self._name}; Termination Probability(p): {self._p}; Penalty Rate(beta): {self._beta};')
         rand_sum = 0.0
         for i in range(resample):
-            rand_sum += random.uniform(0, 1)
+            rand_sum += secrets.SystemRandom().uniform(0, 1)
         rand_avg = rand_sum / resample
         if rand_avg > self._p:
             return False
